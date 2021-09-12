@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebCibertecCafe.Models.Carrito>
+
+
+@{
+    ViewBag.Title = "ListCar";
+}
+
+<br />
+<br />
+<h2>Listado carrito</h2>
+@Html.ActionLink("Seguir comprando", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+<hr />
+@{
+    if (ViewBag.mensaje != null)
+    {
+        <div class="alert alert-danger" id="alertaCarrito" role="alert">
+            @ViewBag.mensaje
+        </div>
+    }
+}
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+             
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRECIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CANTIDAD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IMPORTE)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@Url.Content(item.IMAGE)" class="img-fluid rounded-start" style="width: 2rem;" alt="...">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRECIO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CANTIDAD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IMPORTE)
+            </td>
+            <td>
+                @Html.ActionLink("Eliminar", "DeleteItemCar", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<hr />
+<p><span>Total a pagar: @ViewBag.total.ToString("N2")</span></p>
+
+@Html.ActionLink("Realizar pago", "GoToPayment", null, htmlAttributes: new { @class = "btn btn-success" })
+
+<script>
+    const alerta = document.querySelector('#alertaCarrito');
+
+    if (alerta) {
+        setTimeout(() => {
+            alerta.remove();
+        }, 3000);
+    }
+</script>

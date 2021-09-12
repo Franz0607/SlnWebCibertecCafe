@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CIBER_COFFEEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CLIENT_REQUEST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAMES" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SURNAMES" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="MAIL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TEL_NUM" Type="varchar" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCT_LETTER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="IMAGE" Type="varchar" MaxLength="200" />
+          <Property Name="PRECIO" Type="money" />
+          <Property Name="STOCK" Type="int" />
+        </EntityType>
+        <EntityType Name="SALE_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID_CLIENT" Type="int" />
+          <Property Name="ID_PRODUCT" Type="int" />
+          <Property Name="QUANTITY_PRODUCT" Type="int" Nullable="false" />
+          <Property Name="TOTAL" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="TOTAL_SALE" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CLIENT_SALE">
+          <End Role="CLIENT_REQUEST" Type="Self.CLIENT_REQUEST" Multiplicity="0..1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT_REQUEST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="ID_CLIENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_SALE">
+          <End Role="PRODUCT_LETTER" Type="Self.PRODUCT_LETTER" Multiplicity="0..1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT_LETTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="ID_PRODUCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CIBER_COFFEEModelStoreContainer">
+          <EntitySet Name="CLIENT_REQUEST" EntityType="Self.CLIENT_REQUEST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_LETTER" EntityType="Self.PRODUCT_LETTER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SALE_DETAIL" EntityType="Self.SALE_DETAIL" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CLIENT_SALE" Association="Self.FK_CLIENT_SALE">
+            <End Role="CLIENT_REQUEST" EntitySet="CLIENT_REQUEST" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_SALE" Association="Self.FK_PRODUCT_SALE">
+            <End Role="PRODUCT_LETTER" EntitySet="PRODUCT_LETTER" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CIBER_COFFEEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CLIENT_REQUEST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAMES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SURNAMES" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TEL_NUM" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SALE_DETAIL" Relationship="CIBER_COFFEEModel.FK_CLIENT_SALE" FromRole="CLIENT_REQUEST" ToRole="SALE_DETAIL" />
+        </EntityType>
+        <EntityType Name="PRODUCT_LETTER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMAGE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PRECIO" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="STOCK" Type="Int32" />
+          <NavigationProperty Name="SALE_DETAIL" Relationship="CIBER_COFFEEModel.FK_PRODUCT_SALE" FromRole="PRODUCT_LETTER" ToRole="SALE_DETAIL" />
+        </EntityType>
+        <EntityContainer Name="CIBER_COFFEEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CLIENT_REQUEST" EntityType="Self.CLIENT_REQUEST" />
+          <EntitySet Name="PRODUCT_LETTER" EntityType="Self.PRODUCT_LETTER" />
+          <EntitySet Name="SALE_DETAIL" EntityType="CIBER_COFFEEModel.SALE_DETAIL" />
+          <AssociationSet Name="FK_CLIENT_SALE" Association="CIBER_COFFEEModel.FK_CLIENT_SALE">
+            <End Role="CLIENT_REQUEST" EntitySet="CLIENT_REQUEST" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_SALE" Association="CIBER_COFFEEModel.FK_PRODUCT_SALE">
+            <End Role="PRODUCT_LETTER" EntitySet="PRODUCT_LETTER" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="SALE_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID_CLIENT" Type="Int32" />
+          <Property Name="ID_PRODUCT" Type="Int32" />
+          <Property Name="QUANTITY_PRODUCT" Type="Int32" Nullable="false" />
+          <Property Name="TOTAL" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="TOTAL_SALE" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CLIENT_REQUEST" Relationship="CIBER_COFFEEModel.FK_CLIENT_SALE" FromRole="SALE_DETAIL" ToRole="CLIENT_REQUEST" />
+          <NavigationProperty Name="PRODUCT_LETTER" Relationship="CIBER_COFFEEModel.FK_PRODUCT_SALE" FromRole="SALE_DETAIL" ToRole="PRODUCT_LETTER" />
+        </EntityType>
+        <Association Name="FK_CLIENT_SALE">
+          <End Type="CIBER_COFFEEModel.CLIENT_REQUEST" Role="CLIENT_REQUEST" Multiplicity="0..1" />
+          <End Type="CIBER_COFFEEModel.SALE_DETAIL" Role="SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT_REQUEST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="ID_CLIENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_SALE">
+          <End Type="CIBER_COFFEEModel.PRODUCT_LETTER" Role="PRODUCT_LETTER" Multiplicity="0..1" />
+          <End Type="CIBER_COFFEEModel.SALE_DETAIL" Role="SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT_LETTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="ID_PRODUCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CIBER_COFFEEModelStoreContainer" CdmEntityContainer="CIBER_COFFEEEntities">
+          <EntitySetMapping Name="CLIENT_REQUEST">
+            <EntityTypeMapping TypeName="CIBER_COFFEEModel.CLIENT_REQUEST">
+              <MappingFragment StoreEntitySet="CLIENT_REQUEST">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAMES" ColumnName="NAMES" />
+                <ScalarProperty Name="SURNAMES" ColumnName="SURNAMES" />
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="TEL_NUM" ColumnName="TEL_NUM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_LETTER">
+            <EntityTypeMapping TypeName="CIBER_COFFEEModel.PRODUCT_LETTER">
+              <MappingFragment StoreEntitySet="PRODUCT_LETTER">
+                <ScalarProperty Name="STOCK" ColumnName="STOCK" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SALE_DETAIL">
+            <EntityTypeMapping TypeName="CIBER_COFFEEModel.SALE_DETAIL">
+              <MappingFragment StoreEntitySet="SALE_DETAIL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TOTAL_SALE" ColumnName="TOTAL_SALE" />
+                <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
+                <ScalarProperty Name="QUANTITY_PRODUCT" ColumnName="QUANTITY_PRODUCT" />
+                <ScalarProperty Name="ID_PRODUCT" ColumnName="ID_PRODUCT" />
+                <ScalarProperty Name="ID_CLIENT" ColumnName="ID_CLIENT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
